@@ -33,7 +33,6 @@ async function sayHi(event) {
   }
 
   const senderScreenName = event.users[message.message_create.sender_id].screen_name;
-
   console.log(`${senderScreenName} says ${message.message_create.message_data.text}`);
 
   const requestConfig = {

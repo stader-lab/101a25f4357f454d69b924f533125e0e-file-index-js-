@@ -25,6 +25,18 @@ async function markAsRead(messageId, senderId, auth) {
   await post(requestConfig);
 }
 
+async function indicateTyping(senderId, auth) {
+  const requestConfig = {
+    url: 'https://api.twitter.com/1.1/direct_messages/indicate_typing.json',
+    form: {
+      recipient_id: senderId,
+    },
+    oauth: auth,
+  };
+
+  await post(requestConfig);
+}
+
 async function sayHi(event) {
   // We check that the message is a direct message
   if (!event.direct_message_events) {
@@ -45,7 +57,8 @@ async function sayHi(event) {
   }
 
   await markAsRead(message.message_create.id, message.message_create.sender_id, oAuthConfig);
-  
+  await indicateTyping(message.message_create.sender_id, oAuthConfig);
+
   const senderScreenName = event.users[message.message_create.sender_id].screen_name;
   console.log(`${senderScreenName} says ${message.message_create.message_data.text}`);
 
